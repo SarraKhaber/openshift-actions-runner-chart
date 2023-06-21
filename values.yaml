@@ -80,7 +80,34 @@ replicas: 1
 # i.e. will quit and restart after running one job
 ephemeral: false
 
-serviceAccountName: default
+
+namespace: xdlc-testingtools-qtools
+
+#user can either precise an existing serviceaccount or create a new one
+serviceAccount:
+  create : true
+  name: gaas-svcacc
+
+#role of the runner, rules and name can be overrided
+role:
+    create : true
+    name : gaas-role
+    rules :
+      - apiGroups: ["apps"]
+        resources: ["deployments"]
+        verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+      - apiGroups: [""]
+        resources: ["pods","services","secrets","configmaps"]
+        verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+      - apiGroups: ["rbac.authorization.k8s.io"]
+        resources: ["roles", "rolebindings"]
+        verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+
+#rolebinding of the runner, name can be overrided
+roleBinding:
+    create : true
+    name : gaas-rolebinding  
+
 
 # Adjust requests and limits depending on your resources,
 # and how heavyweight your workloads are.
